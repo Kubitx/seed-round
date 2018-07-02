@@ -3,8 +3,9 @@ import "openzeppelin-solidity/contracts/crowdsale/distribution/FinalizableCrowds
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/ownership/Whitelist.sol";
 import "./BonusHolder.sol";
+import "openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
 
-contract SeedRound is FinalizableCrowdsale, Whitelist {
+contract SeedRound is FinalizableCrowdsale, Whitelist, Pausable {
 
   uint public minContribution;
   uint public bonus;
@@ -23,8 +24,7 @@ contract SeedRound is FinalizableCrowdsale, Whitelist {
 
   }
 
-  function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal
-  {
+  function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal whenNotPaused {
     require(_weiAmount >= minContribution);
     require(holder.controller() == address(this));
     super._preValidatePurchase(_beneficiary, _weiAmount);

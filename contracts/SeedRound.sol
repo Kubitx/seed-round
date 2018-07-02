@@ -46,10 +46,10 @@ contract SeedRound is FinalizableCrowdsale, Whitelist, Pausable {
   }
 
   function _deliverTokens(address _beneficiary, uint256 _tokenAmount) internal {
-    token.transfer(_beneficiary, _tokenAmount);
     uint bonusTokens = _tokenAmount.mul(bonus).div(100);
     token.transfer(holder, bonusTokens);
     holder.addBonus(_beneficiary, bonusTokens);
+    super._deliverTokens(_beneficiary, _tokenAmount);
   }
 
   function finalization() internal {

@@ -53,6 +53,8 @@ contract SeedRound is FinalizableCrowdsale, Whitelist, Pausable {
   }
 
   function finalization() internal {
+    // do we need this changeController ?
+    holder.changeController(address(0));
     token.transfer(msg.sender, token.balanceOf(this));
   }
 }

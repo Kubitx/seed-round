@@ -26,6 +26,14 @@ contract BonusHolder is Whitelist {
     }
   }
 
+  modifier beforeClose() {
+    if(now > withdrawTime) {
+      revert();
+    } else {
+      _;
+    }
+  }
+
 
   constructor(ERC20 _token, uint _withdrawTime) {
     require(_withdrawTime > 0);
@@ -36,7 +44,7 @@ contract BonusHolder is Whitelist {
     super.addAddressToWhitelist(msg.sender);
   }
 
-  function addBonus(address beneficiary, uint tokenAmount) public onlyController {
+  function addBonus(address beneficiary, uint tokenAmount) public onlyController beforeClose {
     require(now < withdrawTime);
     bonus[beneficiary].add(tokenAmount);
   }

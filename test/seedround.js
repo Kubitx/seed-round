@@ -148,5 +148,11 @@ contract('SeedRound', async function(accounts) {
       bonus.should.be.bignumber.equal(expectedBonus);
 
     })
+
+    it('change rate works', async () => {
+      let rate = 100;
+      await seedRound.changeTokenRate(rate);
+      assert((await seedRound.rate()).toNumber() == rate);
+    })
   });
 });

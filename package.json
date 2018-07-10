@@ -2,11 +2,12 @@
   "dependencies": {
     "bignumber.js": "7.2.1",
     "ganache-cli": "^6.1.6",
-    "openzeppelin-solidity": "1.10.0"
+    "openzeppelin-solidity": "1.10.0",
+    "sol-merger": "0.1.2"
   },
   "scripts": {
-    "testrpc": "ganache-cli"
-
+    "testrpc": "ganache-cli",
+    "build-contracts": "sol-merger \"./contracts/*.sol\" ./build"
   },
   "devDependencies": {
     "babel-polyfill": "^6.23.0",

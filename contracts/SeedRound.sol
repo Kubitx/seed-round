@@ -45,6 +45,11 @@ contract SeedRound is CappedCrowdsale, FinalizableCrowdsale, Whitelist, Pausable
     msg.sender.transfer(amount);
   }
 
+  function changeTokenRate(uint _rate) public onlyWhitelisted whenNotPaused {
+    require(_rate > 0);
+    rate = _rate;
+  }
+
   function _deliverTokens(address _beneficiary, uint256 _tokenAmount) internal {
     uint bonusTokens = _tokenAmount.mul(bonusRate).div(100);
     super.addBonus(_beneficiary, bonusTokens);

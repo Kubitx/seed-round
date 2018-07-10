@@ -28,7 +28,6 @@ contract BonusHolder is Pausable {
   }
 
   function addBonus(address beneficiary, uint tokenAmount) internal {
-    require(now < withdrawTime);
     bonus[beneficiary].add(tokenAmount);
   }
 

@@ -33,17 +33,17 @@ contract SeedRound is CappedCrowdsale, FinalizableCrowdsale, Whitelist, Pausable
     super._preValidatePurchase(_beneficiary, _weiAmount);
   }
 
-  function changeMinContribution(uint _minContribution) public onlyWhitelisted {
+  function changeMinContribution(uint _minContribution) public onlyWhitelisted whenNotPaused {
     require(_minContribution > 0);
     minContribution = _minContribution;
   }
 
-  function changeBonus(uint _bonus) public onlyWhitelisted {
+  function changeBonus(uint _bonus) public onlyWhitelisted whenNotPaused {
     require(_bonus > 0);
     bonus = _bonus;
   }
 
-  function withdrawFunds(uint amount) public onlyWhitelisted {
+  function withdrawFunds(uint amount) public onlyWhitelisted whenNotPaused {
     require(address(this).balance >= amount);
     msg.sender.transfer(amount);
   }
@@ -56,8 +56,6 @@ contract SeedRound is CappedCrowdsale, FinalizableCrowdsale, Whitelist, Pausable
   }
 
   function finalization() internal {
-    // do we need this changeController ?
-    holder.changeController(address(0));
     token.transfer(msg.sender, token.balanceOf(this));
   }
 }

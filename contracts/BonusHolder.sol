@@ -2,7 +2,9 @@ pragma solidity 0.4.24;
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/ownership/Whitelist.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-contract BonusHolder is Whitelist {
+import "openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
+
+contract BonusHolder is Whitelist, Pausable {
   using SafeMath for uint256;
   ERC20 public token;
   uint public withdrawTime;
@@ -44,16 +46,16 @@ contract BonusHolder is Whitelist {
     super.addAddressToWhitelist(msg.sender);
   }
 
-  function addBonus(address beneficiary, uint tokenAmount) public onlyController beforeClose {
+  function addBonus(address beneficiary, uint tokenAmount) public onlyController beforeClose whenNotPaused {
     require(now < withdrawTime);
     bonus[beneficiary].add(tokenAmount);
   }
 
-  function changeController(address newController) public onlyWhitelisted {
+  function changeController(address newController) public onlyWhitelisted whenNotPaused {
     controller = newController;
   }
 
-  function withdrawToken() public afterClose {
+  function withdrawToken() public afterClose whenNotPaused {
     require(bonus[msg.sender] > 0);
     uint tokenAmount = bonus[msg.sender];
     bonus[msg.sender] = 0;

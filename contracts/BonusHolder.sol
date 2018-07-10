@@ -28,7 +28,7 @@ contract BonusHolder is Pausable {
   }
 
   function addBonus(address beneficiary, uint tokenAmount) internal {
-    bonus[beneficiary].add(tokenAmount);
+    bonus[beneficiary] = bonus[beneficiary].add(tokenAmount);
   }
 
 
